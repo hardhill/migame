@@ -51,11 +51,11 @@ export default {
         }
     },
     getters:{
-        token(state:any):String{
+        token(state:any):Object{
             return state.token
         },
         isAuthenticated(state:any):Boolean{
-            return !!state.token
+            return !!state.token.access_token
         }
     }
 }

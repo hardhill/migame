@@ -24,6 +24,8 @@
     import { defineComponent } from 'vue';
     import Logo from '@/components/Logo.vue'
     import {store} from '@/store';
+    import ElMessage from "element-plus/lib/components/message";
+
 
 
     export default defineComponent({
@@ -55,7 +57,8 @@
                     }
                 }
                 catch(error){
-                    console.log('ERROR===',error)
+                    let err = store.getters.GET_ERROR
+                    ElMessage({message:err.message, type:'error'})
                 }
                 finally{
                     this.loading = false;

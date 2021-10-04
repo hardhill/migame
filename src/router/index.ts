@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Welcome from '../views/Welcome.vue'
 import Login from '../views/Login.vue'
+import Games from '../views/Games.vue'
+import {store} from "@/store";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -20,6 +22,14 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
+    path: '/games',
+    name: 'Games',
+    component: Games,
+    meta:{
+      auth:true
+    }
+  },
+  {
     path: '/about',
     name: 'About',
     // route level code-splitting
@@ -33,5 +43,16 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+router.beforeEach((to,from,next)=>{
+  const requireAuth = to.meta.auth
+  if(requireAuth && store.getters['auth/isAuthenticated']){
+    next()
+  }else if(requireAuth && !store.getters['auth/isAuthenticated']){
+    next('/login?message=auth')
+  }else{
+    next()
+  }
+})
+
 
 export default router

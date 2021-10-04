@@ -24,7 +24,11 @@ export const store =  createStore({
 
     },
     getters:{
-
+        GET_ERROR(state):object{
+            let e = state.error
+            store.commit('SET_ERROR',{})
+            return e
+        }
     },
     modules: {
         auth
