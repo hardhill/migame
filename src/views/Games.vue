@@ -25,7 +25,7 @@
 
             </el-menu>
         </el-aside>
-        <el-main><MiGame :name="ngame"/></el-main>
+        <el-main><MiGame :name="ngame" :key="ngame"/></el-main>
     </el-container>
 
 </template>
@@ -35,6 +35,7 @@
     import {reactive, ref} from 'vue'
 import { store } from '@/store'
 import router from '@/router'
+import { ElMessage } from 'element-plus'
 
     export default {
         name: "Games",
@@ -42,10 +43,15 @@ import router from '@/router'
             MiGame
         },
         setup(){
-            const ngame = reactive(1)
+            const ngame = ref(1)
             const logoff = async()=>{
-                await store.dispatch('auth/logout')
-                router.push('/login')
+                try{
+                    let result = await store.dispatch('auth/logout')
+                    ElMessage(result.text,result.status)
+                //router.push('/login')
+                }catch(error){
+                    console.log(error)
+                }
             }
             return {ngame, logoff}
         }

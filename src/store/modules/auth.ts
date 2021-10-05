@@ -4,6 +4,7 @@ const JWT_KEY_NAME = 'migame-token'
 const API_SERVER = 'http://ongameapi/api'
 
 
+
 export default {
     namespaced:true,
     state(){
@@ -18,6 +19,7 @@ export default {
         setToken(state:any,token:any){
             state.token = token
             window.localStorage.setItem(JWT_KEY_NAME,token.access_token)
+           
         },
         logout(state:any){
             state.token = null
@@ -26,10 +28,17 @@ export default {
     },
     actions:{
         async login({commit}:any, payload:Object){
-            axios.defaults.withCredentials = true
+            axios.interceptors.request.use(function (config) {
+                config.headers = {'Authorization':''}
+                return config;
+              }, function (error) {
+                // Do something with request error
+                return Promise.reject(error);
+              });
             try {
                 let result = await axios.post(API_SERVER+'/login',payload)
                 commit('setToken',result.data)
+                
                 return true
 
             } catch (error:any) {
@@ -53,10 +62,20 @@ export default {
 
 
         },
-        async logout({commit}:any){
+        async logout(state:any,{commit}:any){
             try{
-                let result = await axios.get(API_SERVER+'/logout')
-                commit('SET_MESSAGE',result.data,{root:true})
+                
+                let hdr = { Authorization: "Bearer " + state.token.access_token }
+                await axios.get(API_SERVER+'/logout').then((response)=>{
+                    let msg = {
+                        text:'Logout',
+                        status:'success'
+                    }
+                    commit('SET_MESSAGE',msg,{root:true})
+                    return msg
+                }
+                )
+                
             }catch(error:any){
                 throw error.response.data
                 

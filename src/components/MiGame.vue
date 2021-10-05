@@ -7,7 +7,7 @@
 
 <script>
     import {ref} from "@vue/reactivity";
-import { nextTick, onMounted } from '@vue/runtime-core';
+import { nextTick, onMounted, watch } from '@vue/runtime-core';
 
     export default {
         name: "MiGame",
@@ -34,6 +34,7 @@ import { nextTick, onMounted } from '@vue/runtime-core';
                     gameInstance.value = game.launch(containerId.value)
                 })
             })
+            
             return {containerId,downloaded,gameInstance}
         }
     }
