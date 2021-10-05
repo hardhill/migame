@@ -10,24 +10,24 @@ if(process.env.NODE_ENV == 'development'){
 export const store =  createStore({
     plugins,
     state: {
-        messages:[],
-        error: {}
+        message:{}
     },
     mutations: {
-        SET_ERROR(state,payload){
-            state.error = {
-                message: payload.message
-            }
+        
+        SET_MESSAGE(state,payload:any){
+            state.message = payload
         }
+        
     },
     actions: {
 
     },
     getters:{
-        GET_ERROR(state):object{
-            let e = state.error
-            store.commit('SET_ERROR',{})
-            return e
+        
+        GET_MESSAGE(state):object{
+            let m = state.message
+            state.message = {}
+            return m
         }
     },
     modules: {

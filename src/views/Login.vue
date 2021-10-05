@@ -57,8 +57,8 @@
                     }
                 }
                 catch(error){
-                    let err = store.getters.GET_ERROR
-                    ElMessage({message:err.message, type:'error'})
+                    let err = store.getters.GET_MESSAGE
+                    ElMessage({message:err.text, type:err.status})
                 }
                 finally{
                     this.loading = false;

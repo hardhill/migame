@@ -33,7 +33,11 @@ export default {
                 return true
 
             } catch (error:any) {
-                commit('SET_ERROR',error.response.data,{root:true})
+                let payload = {
+                    text:error.response.data.message,
+                    status:'error'
+                }
+                commit('SET_MESSAGE',payload,{root:true})
                 throw error.response.data
             }
 
@@ -48,6 +52,19 @@ export default {
             }
 
 
+        },
+        async logout({commit}:any){
+            try{
+                let result = await axios.get(API_SERVER+'/logout')
+                commit('SET_MESSAGE',result.data,{root:true})
+            }catch(error:any){
+                throw error.response.data
+                
+            }finally{
+                commit('logout')
+                
+            }
+            
         }
     },
     getters:{
